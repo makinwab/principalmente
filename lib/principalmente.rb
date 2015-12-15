@@ -1,5 +1,15 @@
+require "principalmente/response"
 require "principalmente/version"
 
 module Principalmente
-  # Your code goes here...
+  class Mastermind
+  	def execute(input)
+  		secret = "BBGR"
+  		if input == secret
+  			Response.new(:message => "Usted gana!", :status => :won)
+  		else
+  			Response.new(:message => "Supongo que otra vez!", :status => :continue)
+  		end
+  	end
+  end
 end
