@@ -8,4 +8,10 @@ describe Principalmente do
   it 'does something useful' do
     expect(false).to eq(true)
   end
+
+  describe '#new' do
+  	it 'instantiates object' do
+  	  pending
+  	end
+  end
 end
