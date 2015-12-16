@@ -1,4 +1,4 @@
-require './lib/principalmente'
+require_relative 'principalmente'
 
 class Runner
 	def run

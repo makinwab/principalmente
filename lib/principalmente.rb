@@ -1,15 +1,6 @@
-require "principalmente/response"
-require "principalmente/version"
+lib = File.expand_path('../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
-module Principalmente
-  class Mastermind
-  	def execute(input)
-  		secret = "BBGR"
-  		if input == secret
-  			Response.new(:message => "Usted gana!", :status => :won)
-  		else
-  			Response.new(:message => "Supongo que otra vez!", :status => :continue)
-  		end
-  	end
-  end
-end
+require "principalmente/runner"
+
+Runner.new.run
