@@ -1,5 +1,5 @@
-require "principalmente/version"
+require "colorize"
+require_relative "principalmente/runner"
 
-module Principalmente
-  # Your code goes here...
-end
+puts "Beinvenido a PRINCIPAL MENTE".magenta
+Runner.new.run
