@@ -1,23 +1,22 @@
+require 'colorize'
 require_relative 'principalmente'
 
 class Runner
 	def run
-		puts(<<-EOT)
-Beinvenido a PRINCIPAL MENTE
-Quieres (j)jugar, leer las (i)nstrucciones, o (d)dejar? 
-		EOT
-
+		puts "Quieres (j)jugar, leer las (i)nstrucciones, o (d)dejar?".magenta
+		print "- "
 		game_entry = gets.chomp.downcase
 
 		case game_entry
 		when 'j', 'jugar'
 			play
 		when 'i', 'instrucciones'
-			puts 'instrucciones'
+			run
 		when 'd', 'dejar'
-			puts "Adios!"
+			puts "Adios!".green
+			return
 		else
-			puts 'Entra en la consola "j"jugar, "i"instrucciones, "d"dejar'
+			puts 'Entra en la consola "j"jugar, "i"instrucciones, "d"dejar'.red
 			run
 		end
 
@@ -32,18 +31,19 @@ Que tu adivina?
 
 		principalmente = Principalmente::Mastermind.new
 		response = nil
+		
 
-		until response && response.status == :won
+		until response && response.status == :quit
 			print "> "
 			input = gets.chomp.upcase
 			response =  principalmente.execute(input)
-			puts response.message
+			color = (response && response.status == :won) ? :green : :red
+			puts response.message.colorize(color)
 
-			if response.status == :quit
-				return
+			if response.status == :won
+				run
+				break
 			end
 		end
-
-		run
 	end
 end

@@ -11,11 +11,7 @@ module Principalmente
   		@difficulty_level = 4
   		@number_of_guesses = 0
   		@random_color_code = Array.new(@difficulty_level) { COLOR_CODE.sample }.join('').upcase
-  		@start_time = 
-  		{
-  			sec: Time.now.to_a[0],
-  			min: Time.now.to_a[1]
-  		}
+  		@start_time = Time.now
 
   		puts @random_color_code
   	end
@@ -36,10 +32,13 @@ module Principalmente
   		right_position = 0
 
   		if input == @random_color_code
+        
+        sec = (Time.now - @start_time).to_i.abs
+        min = sec / 60
+
   			@message = (<<-EOT)
-Felicidades! Has adivinado la secuencia '#{input}' en #{@number_of_guesses} guesses durante 4 minutos,
-22 segundos.
-Quieres (j)ugar de nuevo o (d)ejar?
+Felicidades! Has adivinado la secuencia '#{input}' en #{@number_of_guesses} guesses durante #{min} minutos,
+#{sec} segundos.
   			EOT
 
   			@status = :won
@@ -56,9 +55,9 @@ Quieres (j)ugar de nuevo o (d)ejar?
 
 	  		@number_of_guesses += 1
 	  		@message = (<<-EOT)
-	#{input} tiene #{number_of_correct_elements} de los elementos correctos con #{right_position} en la posicion correcto.
-	Tu has tomado #{@number_of_guesses} adivina.
-	Supongo que otra vez!
+#{input} tiene #{number_of_correct_elements} de los elementos correctos con #{right_position} en la posicion correcto.
+Tu has tomado #{@number_of_guesses} adivina.
+Supongo que otra vez!
 	  			EOT
 
 	  		@status = :continue
@@ -76,7 +75,7 @@ Quieres (j)ugar de nuevo o (d)ejar?
   				@message = "Adios"
   				@status = :quit
   			elsif input.downcase == 'c'
-  				@message = "#{@random_color_pattern} es el codigo"
+  				@message = "#{@random_color_code} es el codigo"
   				@status = :continue
   			else
   				@message = "Adivina es demasiado corto"
