@@ -4,7 +4,7 @@ class Runner
 	def run
 		puts(<<-EOT)
 Beinvenido a PRINCIPAL MENTE
-Quiere (j)jugar, leer las (i)nstrucciones, o (d)dejar? 
+Quieres (j)jugar, leer las (i)nstrucciones, o (d)dejar? 
 		EOT
 
 		game_entry = gets.chomp.downcase
@@ -12,13 +12,13 @@ Quiere (j)jugar, leer las (i)nstrucciones, o (d)dejar?
 		case game_entry
 		when 'j', 'jugar'
 			play
-			run
 		when 'i', 'instrucciones'
 			puts 'instrucciones'
 		when 'd', 'dejar'
 			puts "Adios!"
 		else
 			puts 'Entra en la consola "j"jugar, "i"instrucciones, "d"dejar'
+			run
 		end
 
 	end
@@ -33,11 +33,17 @@ Que tu adivina?
 		principalmente = Principalmente::Mastermind.new
 		response = nil
 
-		until response && (response.status == :won || response.status == :quit)
+		until response && response.status == :won
 			print "> "
 			input = gets.chomp.upcase
 			response =  principalmente.execute(input)
 			puts response.message
+
+			if response.status == :quit
+				return
+			end
 		end
+
+		run
 	end
 end
