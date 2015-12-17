@@ -24,10 +24,16 @@ Quiere (j)jugar, leer las (i)nstrucciones, o (d)dejar?
 	end
 
 	def play
+		puts(<<-EOT)
+He generado un principiante secuencia con cuatro elementos de (r)rojo,
+(v)verde, (a)azul, y a(m)marillo. Usa (d)dejar para dejar el juego.
+Que tu adivina? 
+		EOT
+
 		principalmente = Principalmente::Mastermind.new
 		response = nil
 
-		until response && response.status == :won
+		until response && (response.status == :won || response.status == :quit)
 			print "> "
 			input = gets.chomp.upcase
 			response =  principalmente.execute(input)
