@@ -1,7 +1,6 @@
 # Principalmente
 
-
-[![Coverage Status](https://coveralls.io/repos/andela-bmakinwa/principalmente/badge.svg?branch=master&service=github)](https://coveralls.io/github/andela-bmakinwa/principalmente?branch=master)
+[![Coverage Status](https://coveralls.io/repos/andela-bmakinwa/principalmente/badge.svg?branch=develop&service=github)](https://coveralls.io/github/andela-bmakinwa/principalmente?branch=develop)
 
 Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/principalmente`. To experiment with that code, run `bin/console` for an interactive prompt.
 
