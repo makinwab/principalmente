@@ -1,20 +1,31 @@
 require_relative 'response'
+require_relative 'message_helper'
 require_relative 'version'
 
 module Principalmente
   class Mastermind
-  	COLOR_CODE = ['R', 'V', 'A', 'M']
 
-  	attr_reader :difficulty_level, :number_of_guesses, :message, :status
+  	COLOR_MAP = 
+    {
+      :p => ['a', 'r', 'v', 'm'],
+      :i => ['a', 'r', 'v', 'm', 'n', 'c'],
+      :a => ['a','r','v','m','n','c','g','p']
+    }
 
-  	def initialize
-  		@difficulty_level = 4
+  	attr_reader :difficulty_level, :number_of_guesses, :status
+
+  	def initialize(level_entry, level)
+  		@difficulty_level = level
   		@number_of_guesses = 0
-  		@random_color_code = Array.new(@difficulty_level) { COLOR_CODE.sample }.join('').upcase
   		@start_time = Time.now
 
+      generate_color_code level_entry
   		puts @random_color_code
   	end
+
+    def generate_color_code(level_entry)
+      @random_color_code = Array.new(@difficulty_level) { COLOR_MAP[level_entry].sample }.join('')
+    end
 
   	def execute(input)
 
@@ -24,23 +35,18 @@ module Principalmente
   			continue_game_play input
   		end
 
-  		Response.new(:message => @message, :status => @status)
+  		@status
   	end
 
   	def continue_game_play(input)
   		number_of_correct_elements = 0
   		right_position = 0
+      @number_of_guesses += 1
 
   		if input == @random_color_code
-        
-        sec = (Time.now - @start_time).to_i.abs
-        min = sec / 60
+        game_time = parse_time
 
-  			@message = (<<-EOT)
-Felicidades! Has adivinado la secuencia '#{input}' en #{@number_of_guesses} guesses durante #{min} minutos,
-#{sec} segundos.
-  			EOT
-
+        Principalmente::MessageHelper.new.win_message input, @number_of_guesses, game_time[:min], game_time[:sec]
   			@status = :won
   		else
   			color_code = @random_color_code.split("")
@@ -52,17 +58,20 @@ Felicidades! Has adivinado la secuencia '#{input}' en #{@number_of_guesses} gues
 	  					color_code.delete(letter)
 	  				end
 	  		end
-
-	  		@number_of_guesses += 1
-	  		@message = (<<-EOT)
-#{input} tiene #{number_of_correct_elements} de los elementos correctos con #{right_position} en la posicion correcto.
-Tu has tomado #{@number_of_guesses} adivina.
-Supongo que otra vez!
-	  			EOT
+        Principalmente::MessageHelper.new.game_message input, number_of_correct_elements, right_position, @number_of_guesses
 
 	  		@status = :continue
   		end
   	end
+
+    private
+
+    def parse_time
+      sec = (Time.now - @start_time).to_i.abs
+      min = sec / 60
+
+      { min: min, sec: sec }
+    end
 
   	def is_input_valid(input)
   		result = input.length <=> @difficulty_level
@@ -72,13 +81,12 @@ Supongo que otra vez!
   		elsif result == -1
 
   			if input.downcase == 'd'
-  				@message = "Adios"
   				@status = :quit
   			elsif input.downcase == 'c'
-  				@message = "#{@random_color_code} es el codigo"
+  				Principalmente::MessageHelper.new.cheat_message @random_color_code
   				@status = :continue
   			else
-  				@message = "Adivina es demasiado corto"
+  				Principalmente::MessageHelper.new.short_code_message
   				@status = :continue
   			end
  
@@ -88,10 +96,10 @@ Supongo que otra vez!
   				@message = "Adios"
   				@status = :quit
   			elsif input.downcase == 'cheat'
-  				@message = "#{@random_color_pattern} es el codigo"
+  				Principalmente::MessageHelper.new.cheat_message @random_color_code
   				@status = :continue
   			else
-  				@message = "Adivina es demasiado largo"
+  				Principalmente::MessageHelper.new.long_code_message
   				@status = :continue
   			end
 
