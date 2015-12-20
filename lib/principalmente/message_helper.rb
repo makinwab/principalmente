@@ -32,7 +32,7 @@ module Principalmente
 
 		def win_message(input, guess_number, min, sec)
 			puts "Felicidades!\n Has adivinado la secuencia '#{input.upcase}' en #{guess_number}"\
-					 " guesses durante #{min} minutos,#{sec} segundos.".green
+					 " guesses durante #{min} minuto(s),#{sec} segundo(s).".green
 		end
 
 		def exit_message

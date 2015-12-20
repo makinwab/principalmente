@@ -67,10 +67,11 @@ module Principalmente
     private
 
     def parse_time
-      sec = (Time.now - @start_time).to_i.abs
-      min = sec / 60
+      t = (Time.now - @start_time)
+      min, sec = t.divmod(60)
+      hh, min = min.divmod(60)
 
-      { min: min, sec: sec }
+      { min: min.floor, sec: sec.floor, hh: hh.floor }
     end
 
   	def is_input_valid(input)
