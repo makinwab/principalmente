@@ -12,18 +12,17 @@ module Principalmente
       :a => ['a','r','v','m','n','c','g','p']
     }
 
-  	attr_reader :number_of_guesses, :status, :random_color_code
+  	attr_accessor :number_of_guesses, :status, :random_color_code
 
   	def initialize(level_entry, level)
   		@number_of_guesses = 0
   		@start_time = Time.now
       @difficulty_level = level
 
-      @random_color_code = generate_color_code level_entry, level
-      
+      @random_color_code = self.class.generate_color_code level_entry, level
   	end
 
-    def generate_color_code(level_entry, level)
+    def self.generate_color_code(level_entry, level)
       Array.new(level) { COLOR_MAP[level_entry].sample }.join('')
     end
 
@@ -84,11 +83,11 @@ module Principalmente
   			if input.downcase == 'd'
   				@status = :quit
   			elsif input.downcase == 'c'
+          @status = :continue
   				Principalmente::MessageHelper.new.cheat_message @random_color_code
-  				@status = :continue
   			else
+          @status = :continue
   				Principalmente::MessageHelper.new.short_code_message
-  				@status = :continue
   			end
  
   		elsif result == 1
@@ -96,11 +95,11 @@ module Principalmente
   			if input.downcase == 'dejar'
   				@status = :quit
   			elsif input.downcase == 'cheat'
+          @status = :continue
   				Principalmente::MessageHelper.new.cheat_message @random_color_code
-  				@status = :continue
   			else
+          @status = :continue
   				Principalmente::MessageHelper.new.long_code_message
-  				@status = :continue
   			end
 
   		end

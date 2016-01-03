@@ -3,6 +3,8 @@ require_relative 'response'
 require_relative 'principalmente'
 
 class Runner
+	attr_reader :msg_status, :level, :level_entry
+
 	def run
 		game_entry = STDIN.gets.chomp.downcase
 		parse_game_entry game_entry
@@ -13,7 +15,7 @@ class Runner
 		print "> "
 
 		@level_entry = STDIN.gets.chomp.downcase
-		parse_level_game_entry
+		parse_game_level_entry
 
 		play
 	end
@@ -63,7 +65,7 @@ class Runner
 		end
 	end
 
-	def parse_level_game_entry
+	def parse_game_level_entry
 		case @level_entry
 		when 'p'
 			@level = 4
