@@ -3,7 +3,7 @@ require_relative 'runner'
 
 module Principalmente
 	class Game
-		attr_reader :modes, :difficulty_level, :color_map, :status
+		attr_reader :modes, :difficulty_level
 
 		def initialize
 			@runner = Runner.new

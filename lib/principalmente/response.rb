@@ -24,7 +24,6 @@ class Response
 		when :quit
 			Principalmente::MessageHelper.new.exit_message
 		else
-			
 		end
 	end
 end

@@ -12,24 +12,23 @@ module Principalmente
       :a => ['a','r','v','m','n','c','g','p']
     }
 
-  	attr_reader :difficulty_level, :number_of_guesses, :status
+  	attr_reader :number_of_guesses, :status, :random_color_code
 
   	def initialize(level_entry, level)
-  		@difficulty_level = level
   		@number_of_guesses = 0
   		@start_time = Time.now
+      @difficulty_level = level
 
-      generate_color_code level_entry
-  		puts @random_color_code
+      @random_color_code = generate_color_code level_entry, level
+      
   	end
 
-    def generate_color_code(level_entry)
-      @random_color_code = Array.new(@difficulty_level) { COLOR_MAP[level_entry].sample }.join('')
+    def generate_color_code(level_entry, level)
+      Array.new(level) { COLOR_MAP[level_entry].sample }.join('')
     end
 
   	def execute(input)
-
-  		valid_input = is_input_valid(input)
+  		valid_input = validate_input(input)
 
   		if valid_input == 0
   			continue_game_play input
@@ -55,9 +54,10 @@ module Principalmente
 
 	  				if color_code.include? letter
 	  					number_of_correct_elements += 1
-	  					color_code.delete(letter)
+	  					color_code.delete letter
 	  				end
 	  		end
+
         Principalmente::MessageHelper.new.game_message input, number_of_correct_elements, right_position, @number_of_guesses
 
 	  		@status = :continue
@@ -74,9 +74,9 @@ module Principalmente
       { min: min.floor, sec: sec.floor, hh: hh.floor }
     end
 
-  	def is_input_valid(input)
+  	def validate_input(input)
   		result = input.length <=> @difficulty_level
-
+      
   		if result == 0
   			result = 0
   		elsif result == -1
@@ -94,7 +94,6 @@ module Principalmente
   		elsif result == 1
 
   			if input.downcase == 'dejar'
-  				@message = "Adios"
   				@status = :quit
   			elsif input.downcase == 'cheat'
   				Principalmente::MessageHelper.new.cheat_message @random_color_code

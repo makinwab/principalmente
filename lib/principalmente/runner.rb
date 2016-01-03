@@ -4,7 +4,7 @@ require_relative 'principalmente'
 
 class Runner
 	def run
-		game_entry = gets.chomp.downcase
+		game_entry = STDIN.gets.chomp.downcase
 		parse_game_entry game_entry
 	end
 
@@ -12,7 +12,7 @@ class Runner
 		Response.new :pre_play
 		print "> "
 
-		@level_entry = gets.chomp.downcase
+		@level_entry = STDIN.gets.chomp.downcase
 		parse_level_game_entry
 
 		play
@@ -24,12 +24,12 @@ class Runner
 		principalmente = Principalmente::Mastermind.new(@level_entry.to_sym, @level)
 		game_state = nil
 		
-
 		until game_state && game_state == :quit
 			print "> "
-			input = gets.chomp.downcase
+			input = STDIN.gets.chomp.downcase
 			game_state = principalmente.execute(input)
 
+			break if game_state == :quit
 			Response.new game_state
 
 			if game_state == :won
@@ -37,6 +37,8 @@ class Runner
 				break
 			end
 		end
+
+		quit
 	end
 
 	def quit
