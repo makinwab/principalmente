@@ -27,7 +27,7 @@ module Principalmente
     end
 
   	def execute(input)
-  		valid_input = validate_input(input)
+  		valid_input = parse_input(input)
 
   		if valid_input == 0
   			continue_game_play input
@@ -73,38 +73,33 @@ module Principalmente
       { min: min.floor, sec: sec.floor, hh: hh.floor }
     end
 
-  	def validate_input(input)
-  		result = input.length <=> @difficulty_level
+  	def parse_input(input)
+      result = nil
       
-  		if result == 0
-  			result = 0
-  		elsif result == -1
-
-  			if input.downcase == 'd'
-  				@status = :quit
-  			elsif input.downcase == 'c'
-          @status = :continue
-  				Principalmente::MessageHelper.new.cheat_message @random_color_code
-  			else
-          @status = :continue
-  				Principalmente::MessageHelper.new.short_code_message
-  			end
- 
-  		elsif result == 1
-
-  			if input.downcase == 'dejar'
-  				@status = :quit
-  			elsif input.downcase == 'cheat'
-          @status = :continue
-  				Principalmente::MessageHelper.new.cheat_message @random_color_code
-  			else
-          @status = :continue
-  				Principalmente::MessageHelper.new.long_code_message
-  			end
-
-  		end
+      case input
+      when 'd', 'dejar'
+        @status = :quit
+      when 'c', 'cheat'
+        @status = :continue
+        Principalmente::MessageHelper.new.cheat_message @random_color_code
+      else
+        result = check_input_size(input)
+      end
 
   		result
   	end
+
+    def check_input_size(input)
+      result = input.length <=> @difficulty_level
+      
+      if result == 1
+        Principalmente::MessageHelper.new.long_code_message
+      elsif result == -1
+        Principalmente::MessageHelper.new.short_code_message
+      end
+
+      @status = :continue
+      result
+    end
   end
 end
