@@ -84,4 +84,17 @@ describe Principalmente::Mastermind do
       end
     end 
   end
+
+  describe "#continue_game_play" do
+
+    context "number of guesses" do
+      it "calculates accurately the number of guesses" do
+        subject.random_color_code = "arvm"
+        subject.continue_game_play "rvra"
+        subject.continue_game_play "avra"
+        subject.continue_game_play "arvm"
+        expect(subject.number_of_guesses).to eq 3
+      end
+    end
+  end
 end
