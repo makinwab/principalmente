@@ -15,8 +15,8 @@ module Principalmente
     attr_accessor :number_of_guesses, :status, :random_color_code, :message_helper
 
     def initialize(level_entry, level)
-  	  @number_of_guesses = 0
-  	  @start_time = Time.now
+      @number_of_guesses = 0
+      @start_time = Time.now
       @difficulty_level = level
       @message_helper = Principalmente::MessageHelper.new
 
@@ -28,42 +28,42 @@ module Principalmente
     end
 
     def execute(input)
-  	  result = parse_input(input)
+      result = parse_input(input)
 
-  	  if result == 0
+      if result == 0
   		  continue_game_play input
-  	  end
+      end
 
-  	  @status
+      @status
     end
 
     def continue_game_play(input)
-  	  number_of_correct_elements = 0
-  	  right_position = 0
+      number_of_correct_elements = 0
+      right_position = 0
       @number_of_guesses += 1
 
-  	  if input == @random_color_code
+      if input == @random_color_code
         game_time = parse_time
 
         @message_helper.win_message input, @number_of_guesses, game_time[:min], game_time[:sec]
 
-  		  @status = :won
-  	  else
-  		  color_code = @random_color_code.split("")
+        @status = :won
+      else
+        color_code = @random_color_code.split("")
 
-  		  input.split("").each_with_index do |letter, index| 
-	  			  right_position += 1 if letter == @random_color_code.split("")[index]
+        input.split("").each_with_index do |letter, index| 
+          right_position += 1 if letter == @random_color_code.split("")[index]
 
-	  			  if color_code.include? letter
-	  				  number_of_correct_elements += 1
-	  				  color_code.delete letter
-	  			  end
-	  	  end
+          if color_code.include? letter
+            number_of_correct_elements += 1
+            color_code.delete letter
+          end
+        end
 
         @message_helper.game_message input, number_of_correct_elements, right_position, @number_of_guesses
 
-	  	  @status = :continue
-  	  end
+        @status = :continue
+      end
     end
 
     private
@@ -78,7 +78,7 @@ module Principalmente
 
     def parse_input(input)
       result = nil
-
+      
       case input
       when 'd', 'dejar'
         @status = :quit
@@ -90,7 +90,7 @@ module Principalmente
         result = check_input_size(input)
       end
 
-  	  result
+      result
     end
 
     def check_input_size(input)
