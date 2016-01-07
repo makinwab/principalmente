@@ -4,15 +4,16 @@ require_relative "version"
 
 module Principalmente
   class Mastermind
-
-    COLOR_MAP =
-    {
-      p: %W(a r v m),
-      i: %W(a r v m n c),
-      a: %W(a r v m n c g p)
+    COLOR_MAP = {
+      p: %w(a r v m),
+      i: %w(a r v m n c),
+      a: %w(a r v m n c g p)
     }
 
-    attr_accessor :number_of_guesses, :status, :random_color_code, :message_helper
+    attr_accessor :number_of_guesses,
+                  :status,
+                  :random_color_code,
+                  :message_helper
 
     def initialize(level_entry, level)
       @number_of_guesses = 0
@@ -31,7 +32,7 @@ module Principalmente
       result = parse_input(input)
 
       if result == 0
-  		  continue_game_play input
+        continue_game_play input
       end
 
       @status
@@ -45,13 +46,18 @@ module Principalmente
       if input == @random_color_code
         game_time = parse_time
 
-        @message_helper.win_message input, @number_of_guesses, game_time[:min], game_time[:sec]
+        @message_helper.win_message(
+          input,
+          @number_of_guesses,
+          game_time[:min],
+          game_time[:sec]
+        )
 
         @status = :won
       else
         color_code = @random_color_code.split("")
 
-        input.split("").each_with_index do |letter, index| 
+        input.split("").each_with_index do |letter, index|
           right_position += 1 if letter == @random_color_code.split("")[index]
 
           if color_code.include? letter
@@ -60,7 +66,12 @@ module Principalmente
           end
         end
 
-        @message_helper.game_message input, number_of_correct_elements, right_position, @number_of_guesses
+        @message_helper.game_message(
+          input,
+          number_of_correct_elements,
+          right_position,
+          @number_of_guesses
+        )
 
         @status = :continue
       end
@@ -78,13 +89,12 @@ module Principalmente
 
     def parse_input(input)
       result = nil
-      
-      case input
-      when 'd', 'dejar'
-        @status = :quit
-      when 'c', 'cheat'
-        @status = :continue
 
+      case input
+      when "d", "dejar"
+        @status = :quit
+      when "c", "cheat"
+        @status = :continue
         @message_helper.cheat_message @random_color_code
       else
         result = check_input_size(input)
