@@ -38,42 +38,47 @@ module Principalmente
     end
 
     def continue_game_play(input)
-      number_of_correct_elements = 0
-      right_position = 0
       @number_of_guesses += 1
 
       if input == @random_color_code
-        game_time = parse_time
-
-        @message_helper.win_message(
-          input,
-          @number_of_guesses,
-          game_time[:min],
-          game_time[:sec]
-        )
-
-        @status = :won
+        process_win input
       else
-        color_code = @random_color_code.split("")
-
-        input.split("").each_with_index do |letter, index|
-          right_position += 1 if letter == @random_color_code.split("")[index]
-
-          if color_code.include? letter
-            number_of_correct_elements += 1
-            color_code.delete letter
-          end
-        end
-
-        @message_helper.game_message(
-          input,
-          number_of_correct_elements,
-          right_position,
-          @number_of_guesses
-        )
-
-        @status = :continue
+        process_fail input
       end
+    end
+
+    def process_win(input)
+      @message_helper.win_message(
+        input,
+        @number_of_guesses,
+        parse_time[:min],
+        parse_time[:sec]
+      )
+
+      @status = :won
+    end
+
+    def process_fail(input)
+      number_of_correct_elements = 0
+      right_position = 0
+      color_code = @random_color_code.split("")
+
+      input.split("").each_with_index do |letter, index|
+        right_position += 1 if letter == @random_color_code.split("")[index]
+        if color_code.include? letter
+          number_of_correct_elements += 1
+          color_code.delete letter
+        end
+      end
+
+      @message_helper.game_message(
+        input,
+        number_of_correct_elements,
+        right_position,
+        @number_of_guesses
+      )
+
+      @status = :continue
     end
 
     private

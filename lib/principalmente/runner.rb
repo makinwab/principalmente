@@ -24,11 +24,9 @@ class Runner
     Response.new @msg_status
     principalmente = Principalmente::Mastermind.new(@level_entry.to_sym, @level)
     game_state = nil
-    until game_state && game_state == :quit
-      print "> "
-      input = STDIN.gets.chomp.downcase
-      game_state = principalmente.execute(input)
 
+    until game_state && game_state == :quit
+      game_state = process_play principalmente
       break if game_state == :quit
       Response.new game_state
 
@@ -39,6 +37,14 @@ class Runner
     end
 
     quit
+  end
+
+  def process_play(principalmente)
+    print "> "
+    input = STDIN.gets.chomp.downcase
+    game_state = principalmente.execute(input)
+
+    game_state
   end
 
   def quit
