@@ -10,7 +10,7 @@ module Principalmente
     end
 
     def start
-      Response.new(:start)
+      Response.new :start
       @runner.run
     end
 

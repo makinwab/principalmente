@@ -1,4 +1,3 @@
-require_relative "response"
 require_relative "message_helper"
 require_relative "version"
 
