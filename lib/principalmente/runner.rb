@@ -3,7 +3,7 @@ require_relative "response"
 require_relative "principalmente"
 
 class Runner
-  attr_reader :msg_status, :level, :level_entry
+  attr_reader :play_status, :level, :level_entry
 
   def run
     game_entry = STDIN.gets.chomp.downcase
@@ -13,7 +13,6 @@ class Runner
   def pre_play
     Response.new :pre_play
     print "> "
-
     @level_entry = STDIN.gets.chomp.downcase
     parse_game_level_entry
 
@@ -21,7 +20,7 @@ class Runner
   end
 
   def play
-    Response.new @msg_status
+    Response.new @play_status
     principalmente = Principalmente::Mastermind.new(@level_entry.to_sym, @level)
     game_state = nil
 
@@ -73,13 +72,13 @@ class Runner
     case @level_entry
     when "p"
       @level = 4
-      @msg_status = :b_play
+      @play_status = :b_play
     when "i"
       @level = 5
-      @msg_status = :i_play
+      @play_status = :i_play
     when "a"
       @level = 6
-      @msg_status = :a_play
+      @play_status = :a_play
     else
       puts "El nivel no existe".red
       run
