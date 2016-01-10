@@ -109,7 +109,6 @@ module Principalmente
 
     def check_input_size(input)
       result = input.length <=> @difficulty_level
-      
       if result == 1
         @message_helper.long_code_message
       elsif result == -1

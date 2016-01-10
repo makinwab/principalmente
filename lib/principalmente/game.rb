@@ -13,6 +13,5 @@ module Principalmente
       Response.new :start
       @runner.run
     end
-
   end
 end

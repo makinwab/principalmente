@@ -5,7 +5,6 @@ class Response
 
   def initialize(status)
     @status = status
-    
     respond
   end
 
