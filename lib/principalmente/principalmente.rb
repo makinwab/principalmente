@@ -48,7 +48,7 @@ module Principalmente
     end
 
     def process_win(input)
-      @message_helper.win_message(
+      @message_helper.win(
         input,
         @number_of_guesses,
         parse_time[:min],
@@ -71,7 +71,7 @@ module Principalmente
         end
       end
 
-      @message_helper.game_message(
+      @message_helper.game(
         input,
         number_of_correct_elements,
         right_position,
@@ -99,7 +99,7 @@ module Principalmente
         @status = :quit
       when "c", "cheat"
         @status = :continue
-        @message_helper.cheat_message @random_color_code
+        @message_helper.cheat @random_color_code
       else
         result = check_input_size(input)
       end
@@ -110,9 +110,9 @@ module Principalmente
     def check_input_size(input)
       result = input.length <=> @difficulty_level
       if result == 1
-        @message_helper.long_code_message
+        @message_helper.long_code
       elsif result == -1
-        @message_helper.short_code_message
+        @message_helper.short_code
       end
 
       @status = :continue
